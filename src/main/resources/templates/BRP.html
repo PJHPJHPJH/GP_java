@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BRP算法演示</title>
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<button id="btn">开始训练</button>
+
+<h1><p id="tips">未开始训练</p></h1>
+
+</body>
+<script>
+    tips = document.getElementById("tips");
+    btn = document.getElementById("btn");
+    btn.onclick = function(){
+        tips.innerText = "正在训练，请稍等...";
+        $.ajax({
+            //访问地址
+            url:"http://127.0.0.1:5000/",
+
+            //希望后台给的数据类型
+            dataType:"text",
+
+            //什么请求类型
+            type:"get",
+
+            //成功
+            success(res){
+                console.log("xxxx");
+                tips.innerText = "训练完成\n结果为：" +res;
+
+            },
+
+            //错误
+            error(){
+
+            }
+        })
+    }
+
+</script>
+</html>
