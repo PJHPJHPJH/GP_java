@@ -18,7 +18,8 @@
         tips.innerText = "正在训练，请稍等...";
         $.ajax({
             //访问地址
-            url:"http://127.0.0.1:5000/",
+            url:"http://127.0.0.1:5000/brp/4",
+            // url:"http://127.0.0.1:5000/",
 
             //希望后台给的数据类型
             dataType:"text",
@@ -29,8 +30,7 @@
             //成功
             success(res){
                 console.log("xxxx");
-                tips.innerText = "训练完成\n结果为：" +res;
-
+                tips.innerText = "训练完成\n结果为：" + res;
             },
 
             //错误
