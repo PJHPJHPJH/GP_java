@@ -9,8 +9,16 @@
         select name from users where name=#{userName}
     </select>
 
+    <select id="getUserEmail" resultType="string">
+        select email from users where email=#{userEmail}
+    </select>
+
+    <select id="getUserPhone" resultType="string">
+        select phone from users where phone=#{userPhone}
+    </select>
+
     <insert id="addUser">
-        insert into users (name, password) values (#{userName}, #{userPassword})
+        insert into users (name, password, email, phone) values (#{userName}, #{userPassword}, #{userEmail}, #{userPhone})
     </insert>
 
 

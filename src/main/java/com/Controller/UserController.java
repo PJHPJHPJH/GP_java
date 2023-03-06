@@ -79,15 +79,25 @@ public class UserController {
         String userName = (String) params.get("name");
         String inputPassword = (String) params.get("password");
         String repeatPassword = (String) params.get("repeatPassword");
+        String userEmail = (String) params.get("email");
+        String userPhone = (String) params.get("phone");
 
 
         //进行合法性检查
-
         //检查是否重名
+        //待完成     重复邮箱和重复手机号
         String repeatName = userService.getUserName(userName);
+        String repeatEmail = null;
+        String repeatPhone = null;
+        if (!userEmail.equals("")) {
+            repeatEmail = userService.getUserEmail(userEmail);
+        }
+        if (!userPhone.equals("")) {
+            repeatPhone = userService.getUserPhone(userPhone);
+        }
         //如果不重名,则进行添加
-        if (repeatName == null && inputPassword.equals(repeatPassword)) {
-            Integer returnId = userService.addUser(userName, inputPassword);
+        if (repeatName == null && repeatEmail == null && repeatPhone == null && inputPassword.equals(repeatPassword)) {
+            Integer returnId = userService.addUser(userName, inputPassword, userEmail, userPhone);
             // 返回值为1为成功，返回值为0为失败
             if (returnId == 1) {
                 return "true";
@@ -95,8 +105,65 @@ public class UserController {
             else return "false";
         }
         return "false";
-
     }
 
+
+    //重名检查接口
+    @ResponseBody
+    @PostMapping("/repeatName")
+    public String repeatName(@RequestBody Map<String,Object> params) {
+
+        String userName = (String) params.get("name");
+        //进行合法性检查
+        //检查是否重名
+        String repeatName = userService.getUserName(userName);
+        //如果不重名,则返回成功
+        if (userName.equals(repeatName)) {
+            return "true";
+        }
+        else {
+            return "false";
+        }
+    }
+
+
+    //重复邮箱检查接口
+    @ResponseBody
+    @PostMapping("/repeatEmail")
+    public String repeatEmail(@RequestBody Map<String,Object> params) {
+
+        String userEmail = (String) params.get("email");
+        //进行合法性检查
+        //检查是否重复邮箱
+        String repeatEmail = userService.getUserEmail(userEmail);
+        //如果不重复邮箱,则返回成功
+        if (userEmail.equals(repeatEmail)) {
+            return "true";
+        }
+        else {
+            return "false";
+        }
+    }
+
+
+
+
+    //重复手机号检查接口
+    @ResponseBody
+    @PostMapping("/repeatPhone")
+    public String repeatPhone(@RequestBody Map<String,Object> params) {
+
+        String userPhone = (String) params.get("phone");
+        //进行合法性检查
+        //检查是否重复手机号
+        String repeatPhone = userService.getUserPhone(userPhone);
+        //如果不重复手机号,则返回成功
+        if (userPhone.equals(repeatPhone)) {
+            return "true";
+        }
+        else {
+            return "false";
+        }
+    }
 
 }
