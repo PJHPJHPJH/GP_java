@@ -1,5 +1,6 @@
 package com.Mapper;
 
+import com.Entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -7,6 +8,8 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper {
     //根据用户名查询用户密码
     public String getUserPassword(@Param("userName") String userName);
+    //根据用户名查询用户id
+    public Integer getUserId(@Param("userName") String userName);
     //根据用户名查询用户名，用于重名检验
     public String getUserName(@Param("userName") String userName);
     //注册添加用户
@@ -15,4 +18,6 @@ public interface UserMapper {
     public String getUserEmail(@Param("userEmail") String userEmail);
     //根据手机号查询手机号，用于重复手机号检验
     public String getUserPhone(@Param("userPhone") String userPhone);
+    //获得所有用户信息
+    public User[] getUsers();
 }

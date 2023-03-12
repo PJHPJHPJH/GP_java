@@ -1,5 +1,6 @@
 package com.Service;
 
+import com.Entity.User;
 import com.Mapper.UserMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,10 @@ public class UserService {
         return userMapper.getUserPassword(userName);
     }
 
+    //根据用户名查询用户id
+    public Integer getUserId(String userName) {
+        return userMapper.getUserId(userName);
+    }
     //根据用户名查询用户名，用于重名检验
     public String getUserName(String userName) {
         return userMapper.getUserName(userName);
@@ -41,6 +46,11 @@ public class UserService {
     //注册添加用户
     public Integer addUser(String userName, String userPassword, String userEmail, String userPhone) {
         return userMapper.addUser(userName, userPassword, userEmail, userPhone);
+    }
+
+    //获得所有用户的信息
+    public User[] getUsers(){
+        return userMapper.getUsers();
     }
 
 }

@@ -1,6 +1,9 @@
 package com.Controller;
 
+import com.Entity.User;
 import com.Service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +46,7 @@ public class UserController {
 
 
     //访问BRP算法接口
+    //测试接口，可删除
     @RequestMapping("/BRP")
     public String BRP(Map<String, Object> map,
                       HttpServletResponse response) {
@@ -52,6 +56,14 @@ public class UserController {
         return "BRP";
     }
 
+
+    /**
+     * 前台业务
+     * @param params
+     * @return
+     */
+
+    //登录功能实现
     @ResponseBody
     @PostMapping("/login")
     public String login(@RequestBody Map<String,Object> params) {
@@ -64,14 +76,15 @@ public class UserController {
         System.out.println(inputPassword);
 
         String userPassword = userService.getUserPassword(userName);
-        if (userPassword.equals(inputPassword)) {
-            return "true";
+        if (userPassword != null && userPassword.equals(inputPassword)) {
+            Integer userId = userService.getUserId(userName);
+            return Integer.toString(userId);
         }
         return "false";
-
     }
 
 
+    //注册功能实现
     @ResponseBody
     @PostMapping("/register")
     public String register(@RequestBody Map<String,Object> params) {
@@ -164,6 +177,27 @@ public class UserController {
         else {
             return "false";
         }
+    }
+
+
+    /**
+     * 后台业务
+     */
+
+    //返回所有用户的信息
+    @ResponseBody
+    @GetMapping("/getUsers")
+    public String getUsers() {
+        User[] users = userService.getUsers();
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "";
+        try {
+            json = mapper.writeValueAsString(users);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println(json);
+        return json;
     }
 
 }

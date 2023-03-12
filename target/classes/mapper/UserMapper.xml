@@ -5,6 +5,11 @@
         select password from users where name=#{userName}
     </select>
 
+    <select id="getUserId" resultType="integer">
+        select userId from users where name=#{userName}
+    </select>
+
+
     <select id="getUserName" resultType="string">
         select name from users where name=#{userName}
     </select>
@@ -20,6 +25,13 @@
     <insert id="addUser">
         insert into users (name, password, email, phone) values (#{userName}, #{userPassword}, #{userEmail}, #{userPhone})
     </insert>
+
+    <select id="getUsers" resultType="com.Entity.User">
+        select userId as userId, name as userName, password as userPassword,
+        email as userEmail, phone as userPhone
+        from users
+    </select>
+
 
 
 </mapper>
