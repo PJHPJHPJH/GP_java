@@ -75,9 +75,9 @@ public class UserController {
         System.out.println(userName);
         System.out.println(inputPassword);
 
-        String userPassword = userService.getUserPassword(userName);
+        String userPassword = userService.getUserPasswordByName(userName);
         if (userPassword != null && userPassword.equals(inputPassword)) {
-            Integer userId = userService.getUserId(userName);
+            Integer userId = userService.getUserIdByName(userName);
             return Integer.toString(userId);
         }
         return "false";
@@ -99,14 +99,14 @@ public class UserController {
         //进行合法性检查
         //检查是否重名
         //待完成     重复邮箱和重复手机号
-        String repeatName = userService.getUserName(userName);
+        String repeatName = userService.getUserNameByName(userName);
         String repeatEmail = null;
         String repeatPhone = null;
         if (!userEmail.equals("")) {
-            repeatEmail = userService.getUserEmail(userEmail);
+            repeatEmail = userService.getUserEmailByEmail(userEmail);
         }
         if (!userPhone.equals("")) {
-            repeatPhone = userService.getUserPhone(userPhone);
+            repeatPhone = userService.getUserPhoneByPhone(userPhone);
         }
         //如果不重名,则进行添加
         if (repeatName == null && repeatEmail == null && repeatPhone == null && inputPassword.equals(repeatPassword)) {
@@ -129,7 +129,7 @@ public class UserController {
         String userName = (String) params.get("name");
         //进行合法性检查
         //检查是否重名
-        String repeatName = userService.getUserName(userName);
+        String repeatName = userService.getUserNameByName(userName);
         //如果不重名,则返回成功
         if (userName.equals(repeatName)) {
             return "true";
@@ -148,7 +148,7 @@ public class UserController {
         String userEmail = (String) params.get("email");
         //进行合法性检查
         //检查是否重复邮箱
-        String repeatEmail = userService.getUserEmail(userEmail);
+        String repeatEmail = userService.getUserEmailByEmail(userEmail);
         //如果不重复邮箱,则返回成功
         if (userEmail.equals(repeatEmail)) {
             return "true";
@@ -169,7 +169,7 @@ public class UserController {
         String userPhone = (String) params.get("phone");
         //进行合法性检查
         //检查是否重复手机号
-        String repeatPhone = userService.getUserPhone(userPhone);
+        String repeatPhone = userService.getUserPhoneByPhone(userPhone);
         //如果不重复手机号,则返回成功
         if (userPhone.equals(repeatPhone)) {
             return "true";
@@ -178,6 +178,60 @@ public class UserController {
             return "false";
         }
     }
+
+
+
+    //忘记密码：邮箱验证接口
+    @ResponseBody
+    @PostMapping("/emailValidation")
+    public String emailValidation(@RequestBody Map<String,Object> params) {
+        String userName = (String) params.get("name");
+        String userEmail = (String) params.get("email");
+
+        String validationEmail = userService.getUserEmailByName(userName);
+
+        if(userEmail.equals(validationEmail)) {
+            return "true";
+        }
+        else return "false";
+
+    }
+
+
+    //忘记密码：手机号验证接口
+    @ResponseBody
+    @PostMapping("/phoneValidation")
+    public String phoneValidation(@RequestBody Map<String,Object> params) {
+        String userName = (String) params.get("name");
+        String userPhone = (String) params.get("phone");
+        String validationPhone = userService.getUserPhoneByName(userName);
+        if(userPhone.equals(validationPhone)) {
+            return "true";
+        }
+        else return "false";
+    }
+
+
+    //忘记密码：修改用户密码
+    @ResponseBody
+    @PostMapping("/forget")
+    public String forget(@RequestBody Map<String,Object> params) {
+        String userName = (String) params.get("name");
+        String newPassword = (String) params.get("password");
+
+        //修改密码
+        userService.updateUserPasswordByName(userName, newPassword);
+
+        return "true";
+
+    }
+
+
+
+
+
+
+
 
 
     /**

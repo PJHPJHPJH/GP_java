@@ -1,26 +1,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.Mapper.UserMapper">
-    <select id="getUserPassword" resultType="string">
+
+<!--    查询功能    -->
+
+    <select id="getUserPasswordByName" resultType="string">
         select password from users where name=#{userName}
     </select>
 
-    <select id="getUserId" resultType="integer">
+    <select id="getUserIdByName" resultType="integer">
         select userId from users where name=#{userName}
     </select>
 
 
-    <select id="getUserName" resultType="string">
+    <select id="getUserNameByName" resultType="string">
         select name from users where name=#{userName}
     </select>
+    <select id="getUserEmailByName" resultType="string">
+        select email from users where name=#{userName}
+    </select>
+    <select id="getUserPhoneByName" resultType="string">
+        select phone from users where name=#{userName}
+    </select>
 
-    <select id="getUserEmail" resultType="string">
+    <select id="getUserEmailByEmail" resultType="string">
         select email from users where email=#{userEmail}
     </select>
 
-    <select id="getUserPhone" resultType="string">
+    <select id="getUserPhoneByPhone" resultType="string">
         select phone from users where phone=#{userPhone}
     </select>
+
+
+<!--    注册功能    -->
 
     <insert id="addUser">
         insert into users (name, password, email, phone) values (#{userName}, #{userPassword}, #{userEmail}, #{userPhone})
@@ -33,5 +45,10 @@
     </select>
 
 
+
+<!--    修改功能    -->
+    <update id="updateUserPasswordByName">
+        update users set password = #{newPassword} where name = #{userName}
+    </update>
 
 </mapper>
