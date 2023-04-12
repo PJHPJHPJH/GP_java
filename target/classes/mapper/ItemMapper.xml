@@ -1,0 +1,20 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Mapper.ItemMapper">
+
+<!--    查询功能    -->
+
+    <select id="getItems" resultType="com.Entity.Item">
+        select itemId as itemId, name as itemName, description as itemDescription,
+               details as itemDetails, fabric as itemFabric, weight as itemWeight,
+               nation as itemNation, price as itemPrice , rate as itemRate
+        from items
+    </select>
+
+    <select id="getItemByItemId" resultType="com.Entity.Item">
+        select itemId as itemId, name as itemName, description as itemDescription,
+               details as itemDetails, fabric as itemFabric, weight as itemWeight,
+               nation as itemNation, price as itemPrice , rate as itemRate
+        from items where itemId = #{itemId}
+    </select>
+</mapper>

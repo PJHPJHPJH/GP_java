@@ -1,0 +1,41 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Mapper.CartMapper">
+
+<!--    查询功能    -->
+
+    <select id="getCartIdsByUserId" resultType="int">
+        select orderId from orders where userId = #{userId}
+    </select>
+
+    <select id="getItemIdsByUserId" resultType="int">
+        select itemId from orders where userId = #{userId}
+    </select>
+
+    <select id="getNumsByUserId" resultType="int">
+        select number from orders where userId = #{userId}
+    </select>
+
+
+
+    <select id="getOrderIdByUserIdAndItemId" resultType="int">
+        select orderId from orders where userId = #{userId} and itemId = #{itemId}
+    </select>
+
+
+
+<!--    删除功能-->
+    <delete id="deleteCartById">
+        delete from orders where orderId = #{orderId}
+    </delete>
+
+<!--    更新-->
+    <update id="updateNumById">
+        update orders set number = #{num} where orderId = #{orderId}
+    </update>
+
+    <insert id="addCart">
+        insert into orders (userId, itemId, number) values (#{userId}, #{itemId}, #{num})
+    </insert>
+
+</mapper>

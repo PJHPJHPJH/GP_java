@@ -124,7 +124,7 @@ public class UserController {
     //重名检查接口
     @ResponseBody
     @PostMapping("/repeatName")
-    public String repeatName(@RequestBody Map<String,Object> params) {
+    public String repeatName(@RequestBody Map<String, Object> params) {
 
         String userName = (String) params.get("name");
         //进行合法性检查
@@ -179,8 +179,6 @@ public class UserController {
         }
     }
 
-
-
     //忘记密码：邮箱验证接口
     @ResponseBody
     @PostMapping("/emailValidation")
@@ -196,8 +194,6 @@ public class UserController {
         else return "false";
 
     }
-
-
     //忘记密码：手机号验证接口
     @ResponseBody
     @PostMapping("/phoneValidation")
@@ -220,10 +216,92 @@ public class UserController {
         String newPassword = (String) params.get("password");
 
         //修改密码
-        userService.updateUserPasswordByName(userName, newPassword);
+        if(userService.updateUserPasswordByName(userName, newPassword) != 0){
+            return "true";
+        }
 
-        return "true";
+        return "false";
 
+    }
+
+    @ResponseBody
+    @PostMapping("/getUserInformation")
+    public String getUserInformation(@RequestBody Map<String, Object> map) {
+        //获得用户的id
+        Integer userId = Integer.parseInt((String) map.get("id"));
+        User user = userService.getUserByUserId(userId);
+        user.setUserId(userId);
+        //将密码处理成密文
+        String password = user.getUserPassword();
+        String newPassword = "";
+        for (int i = 0; i < password.length(); i++){
+            newPassword += "*";
+        }
+        user.setUserPassword(newPassword);
+        //将数据进行JSON封装
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "";
+        try {
+            json = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        //测试数据输出
+//        System.out.println(json);
+        return json;
+    }
+
+
+
+    //修改用户名
+    @ResponseBody
+    @PostMapping("/updateName")
+    public String updateName(@RequestBody Map<String, Object> map) {
+        Integer userId = Integer.parseInt((String) map.get("id"));
+        String userName = (String) map.get("name");
+        String userPassword = (String) map.get("password");
+        //将输入密码与数据库中的密码进行验证
+        if(userPassword.equals(userService.getUserPasswordById(userId))){
+            if(userService.updateUserNameById(userId, userName) != 0){
+                return "true";
+            }
+        }
+        return "false";
+    }
+
+
+
+
+    //修改用户邮箱
+    @ResponseBody
+    @PostMapping("/updateEmail")
+    public String updateEmail(@RequestBody Map<String, Object> map) {
+        Integer userId = Integer.parseInt((String) map.get("id"));
+        String userPassword = (String) map.get("password");
+        String userEmail = (String) map.get("email");
+        //将输入密码与数据库中的密码进行验证
+        if(userPassword.equals(userService.getUserPasswordById(userId))){
+            if(userService.updateUserEmailById(userId, userEmail) != 0){
+                return "true";
+            }
+        }
+        return "false";
+    }
+
+    //修改用户手机号
+    @ResponseBody
+    @PostMapping("/updatePhone")
+    public String updatePhone(@RequestBody Map<String, Object> map) {
+        Integer userId = Integer.parseInt((String) map.get("id"));
+        String userPassword = (String) map.get("password");
+        String userPhone = (String) map.get("phone");
+        //将输入密码与数据库中的密码进行验证
+        if(userPassword.equals(userService.getUserPasswordById(userId))){
+            if(userService.updateUserPhoneById(userId, userPhone) != 0){
+                return "true";
+            }
+        }
+        return "false";
     }
 
 
@@ -243,6 +321,7 @@ public class UserController {
     @GetMapping("/getUsers")
     public String getUsers() {
         User[] users = userService.getUsers();
+        //将数据进行JSON封装
         ObjectMapper mapper = new ObjectMapper();
         String json = "";
         try {

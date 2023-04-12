@@ -44,11 +44,34 @@
         from users
     </select>
 
+    <select id="getUserByUserId" resultType="com.Entity.User">
+        select name as userName, password as userPassword,
+        email as userEmail, phone as userPhone
+        from users where userId = #{userId}
+    </select>
+
+    <select id="getUserPasswordById" resultType="string">
+        select password from users where userId = #{userId}
+    </select>
+
 
 
 <!--    修改功能    -->
     <update id="updateUserPasswordByName">
         update users set password = #{newPassword} where name = #{userName}
     </update>
+
+    <update id="updateUserNameById">
+        update users set name = #{userName} where userId = #{userId}
+    </update>
+
+    <update id="updateUserEmailById">
+        update users set email = #{userEmail} where userId = #{userId}
+    </update>
+
+    <update id="updateUserPhoneById">
+        update users set phone = #{userPhone} where userId = #{userId}
+    </update>
+
 
 </mapper>
